@@ -1,32 +1,44 @@
-# Personal Assistant
+# Personal Assistant MVP
 
-A local-first Linux personal assistant that remembers context, manages workload, schedules reminders, and provides an LLM conversational interface.
+A local-first Linux assistant for remembering work, tracking tasks, and showing workload.
 
-## Vision
+## Quick start
 
-This is not intended to be another chatbot. The assistant separates durable personal state from LLM reasoning:
+```bash
+git clone https://github.com/theQuarky/personal-assistant.git
+cd personal-assistant
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
 
-- SQLite stores tasks, projects, commitments, reminders, and structured memories.
-- An LLM interprets natural language and reasons over retrieved context.
-- A deterministic workload engine calculates what is realistic.
-- A scheduler handles reminders independently of the LLM.
-- Conversation importers will ingest ChatGPT, Claude, and Gemini exports.
-- The Linux desktop widget provides a fast view of today and upcoming work.
+Add work:
 
-## Planned stack
+```bash
+pa add "Finish cybersecurity report" --due "2026-09-04 18:00" --minutes 120 --priority 5
+pa add "Read research paper" --minutes 60 --priority 3
+pa today
+```
 
-- Python 3.12+
-- FastAPI
-- SQLite
-- Ollama
-- GTK4 / Libadwaita
-- systemd user services/timers
-- Local embeddings for semantic memory
+Launch the desktop view:
 
-## Development status
+```bash
+python -m assistant.widget
+```
 
-Early bootstrap. V0.1 focuses on the domain model, SQLite persistence, workload calculation, and a small CLI/API foundation before adding the desktop UI and LLM tools.
+Launch the API:
 
-## Privacy
+```bash
+uvicorn assistant.api:app --reload
+```
 
-The design is local-first. No cloud AI provider is required for normal operation. Imported conversations and personal data should remain on the local machine unless the user explicitly configures an external service.
+The local database lives at `~/.local/share/personal-assistant/assistant.db`.
+
+## Roadmap
+
+- Natural-language task creation with Ollama
+- Persistent semantic memory
+- ChatGPT / Claude / Gemini importers
+- Workload-aware scheduling
+- Linux notifications and systemd reminders
+- GTK4/Libadwaita desktop widget
